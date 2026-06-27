@@ -106,7 +106,7 @@ def run_rag_query(
             model=model_name,
             messages=messages,
             temperature=0.2,
-            max_tokens=65535
+            max_tokens=1000
         )
 
         
