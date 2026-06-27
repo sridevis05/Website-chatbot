@@ -1,0 +1,22 @@
+# Environment files
+.env
+
+# Local python dependencies folder
+packages/
+
+# Local databases and caches
+chroma_db/
+cache_dir/
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE configurations
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
