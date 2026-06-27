@@ -5,6 +5,18 @@ from bs4 import BeautifulSoup
 from pypdf import PdfReader
 from typing import List, Dict, Tuple
 
+def extract_text_bs4(html_content: str) -> str:
+    soup = BeautifulSoup(html_content, "html.parser")
+    for tag in soup(["script", "style", "nav", "footer", "header", "aside", "noscript"]):
+        tag.decompose()
+    raw_text = soup.get_text(separator="\n")
+    lines = []
+    for line in raw_text.splitlines():
+        line = line.strip()
+        if line and len(line) > 1:
+            lines.append(line)
+    return "\n".join(lines)
+
 def extract_text_from_html(html_content: str) -> str:
     """
     Extracts main body text from HTML using Trafilatura, with a robust BeautifulSoup fallback.
@@ -20,8 +32,11 @@ def extract_text_from_html(html_content: str) -> str:
         no_fallback=False
     )
     
-    if not text:
-        return ""
+    # Fallback to BeautifulSoup if Trafilatura fails or returns insufficient content (< 1200 chars)
+    if not text or len(text) < 1200:
+        bs_text = extract_text_bs4(html_content)
+        if len(bs_text) > (len(text) if text else 0):
+            text = bs_text
         
     # Clean up whitespace
     lines = (line.strip() for line in text.splitlines())
