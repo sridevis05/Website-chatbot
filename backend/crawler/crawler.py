@@ -236,8 +236,9 @@ async def crawl_site(
         return crawled_results
         
     except Exception as err:
-        
-        error_msg = f"Crawl job failed: {str(err)}"
+        import traceback
+        tb = traceback.format_exc()
+        error_msg = f"Crawl job failed: {str(err)}\n{tb}"
         print(error_msg)
         job["status"] = "failed"
         job["errors"].append(error_msg)
