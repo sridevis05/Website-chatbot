@@ -46,4 +46,4 @@ async def health_check():
 if __name__ == "__main__":
     # Note: On Windows, running with reload=True forces the SelectorEventLoop,
     # which does not support the subprocesses required by Playwright.
-    uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=True)
+    uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=False)
