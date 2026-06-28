@@ -4,7 +4,8 @@ FROM python:3.11-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8000
+    PORT=8000 \
+    HF_HOME=/app/model_cache
 
 WORKDIR /app
 
@@ -25,6 +26,9 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 
 # Install python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Pre-download SentenceTransformer model to avoid downloading at startup
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 
 # Install Playwright and chromium browser binary + system dependencies for headless running
 RUN playwright install chromium
