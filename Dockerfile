@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy requirements file
 COPY requirements.txt .
 
+# Install CPU-only PyTorch first to avoid massive CUDA dependencies (saves build time/space)
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
 # Install python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -33,5 +36,5 @@ COPY . .
 # Expose backend API port
 EXPOSE 8000
 
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port $PORT"]
 

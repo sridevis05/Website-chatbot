@@ -14,7 +14,7 @@ class Settings:
     
     # API Settings
     HOST: str = "0.0.0.0"
-    PORT: int = 8000
+    PORT: int = int(os.getenv("PORT", 8000))
 
 settings = Settings()
 
